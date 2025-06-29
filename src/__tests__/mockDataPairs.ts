@@ -1,4 +1,4 @@
-import type { ParsedParam } from "../lib/utils"
+import type { ParsedParam } from "../utils/parse-utils"
 import type { OpenAPIV3_1 } from "../open-api-types"
 import { mockData } from "./mockInput"
 

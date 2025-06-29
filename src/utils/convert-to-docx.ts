@@ -1,5 +1,5 @@
-import { parseData } from '../lib/utils'
-import type { ParsedParam } from '../lib/utils'
+import { parseData } from '../utils/parse-utils'
+import type { ParsedParam } from '../utils/parse-utils'
 import { Paragraph, Table, TableCell, TableRow, TextRun, WidthType } from 'docx'
 type ElementType<T extends ReadonlyArray<unknown>> = T extends ReadonlyArray<infer ElementType> ? ElementType : never;
 type ParsedData = ReturnType<typeof parseData>
@@ -317,7 +317,7 @@ export function convertToDocxContent(
             }), 
             new TextRun({
               text: item.requests.required ? 'Да' : 'Нет',
-              highlight: item.requests.required ? 'red' : undefined,
+              color: item.requests.required ? 'FF0000' : undefined,
             }),
           ]
         })

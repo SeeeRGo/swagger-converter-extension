@@ -1,4 +1,4 @@
-import { parseData, parsePropertyType, parseParam, parseSchema, parseArraySchema, parseRefSchema, parseParameters, parseRequestBody, parseResponse, parseResponses } from '../lib/utils'
+import { parseData, parsePropertyType, parseParam, parseSchema, parseArraySchema, parseRefSchema, parseParameters, parseRequestBody, parseResponse, parseResponses } from '../utils/parse-utils'
 import { expect, test } from 'vitest'
 import { mockDataMini, mockDataOnlyRecursive } from './mockInputMini'
 import { MockOutputMini } from './mockOutpuMini'

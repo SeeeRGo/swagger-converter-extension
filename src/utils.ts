@@ -1,4 +1,4 @@
-import { parseData } from './lib/utils'
+import { parseData } from './utils/parse-utils'
 import { convertToDocxContent } from './utils/convert-to-docx'
 import { Document, Packer } from 'docx'
 import yaml from 'js-yaml'

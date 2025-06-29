@@ -1,79 +1,24 @@
 import './App.css'
-import yaml from 'js-yaml';
-import { parseData } from './lib/utils';
-import { convertToDocxContent } from './utils/convert-to-docx.js';
-import { Document, Packer } from 'docx';
+import { UploadSwagger } from './components/upload-swagger.js';
+import { ConvertOnline } from './components/convert-online.js'; // @ts-ignore
+import imgUrl from './assets/github-mark.png'
 
+const strings = {
+  title: "Конвертер JSON/YAML в DOCX"
+}
 function App() {
   return (
-    <>
-      <button 
-      onClick={() => {    
-      console.log('loading requests');
-      //@ts-ignore
-      chrome.runtime.sendMessage({ action: "getRequests" }, async (response) => {
-        const { requests } = response
-        console.log('response', requests);
-          const res = requests.map((data: { type: string, text: string }) => {
-      if (data.type === 'json') {
-        return JSON.parse(data.text)
-      } else if (data.type === 'yaml') {
-        return yaml.load(data.text)  
-      }
-      return ''
-    })
-    // @ts-expect-error idc
-    const aggregatedRes = res.reduce((acc, schema) => {
-      acc.components = {
-        schemas: {
-          ...(acc.components?.schemas ?? {}),
-          ...(schema.components?.schemas ?? {})
-        },
-        parameters: {
-          ...(acc.components?.parameters ?? {}),
-          ...(schema.components?.parameters ?? {})
-        },
-        requestBodies: {
-          ...(acc.components?.requestBodies ?? {}),
-          ...(schema.components?.requestBodies ?? {})
-        },
-        responses: {
-          ...(acc.components?.responses ?? {}),
-          ...(schema.components?.responses ?? {})
-        },
-      }
-      acc.paths = {
-        ...(acc.paths ?? {}),
-        ...(schema.paths ?? {})
-      }
-      acc.openapi = schema.openapi
-      acc.info = schema.info
-      return acc
-    }, {
-
-    })
-    // return Response.json(aggregatedRes)
-    const parsedData = parseData(aggregatedRes)      
-    
-    const doc = new Document({
-      sections: [{
-        properties: {},
-        children: convertToDocxContent(parsedData)
-      }]
-    })
-    const blob = await Packer.toBlob(doc)
-    const url = window.URL.createObjectURL(blob)        
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `swagger.docx`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    window.URL.revokeObjectURL(url)
-      })
-      }}
-      >Создать документацию</button>
-    </>
+    <div className="w-[350px] flex flex-col gap-1">
+      <p className='text-lg'>{strings.title}</p>
+      <UploadSwagger />
+      <ConvertOnline />
+      <div className='flex flex-row justify-between'>
+      <a href="https://pay.cloudtips.ru/p/6b58eceb" target="_blank">Поддержать рублём</a>
+      <a className="size-[24px]" href="https://github.com/SeeeRGo/swagger-converter-extension" target="_blank">
+        <img src={imgUrl} width={24} height={24} />
+      </a>
+      </div>
+    </div>
   )
 }
 

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Simple Request Logger",
+  "name": "Swagger -> Docx",
   "version": "1.0",
   "description": "Logs basic information about all requests made on a page",
   "permissions": ["webRequest", "storage", "activeTab"],
