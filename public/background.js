@@ -12,12 +12,14 @@ chrome.webRequest.onCompleted.addListener(
       
       fetch(details.url)
         .then(data => data.text())
-        .then(blob => {      
-          console.log('pushing to blobs', blobs.length);
-          blobs.push({
-            text: blob,
-            type: details.url.endsWith('.json') ? 'json' : 'yaml'
-          })
+        .then(blob => {  
+          if(blob.includes('openapi')) {
+            console.log('blobbing');
+            blobs.push({
+              text: blob,
+              type: details.url.endsWith('.json') ? 'json' : 'yaml'
+            })
+          }   
         })
         .catch(err => console.error(err));
     }
