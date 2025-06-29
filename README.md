@@ -1,3 +1,5 @@
+# Описание расширения
+Загружаешь свою сваггер спецификацию - получаешь файл docx с описанием ручек json'ов запросов и ответов
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
