@@ -3,7 +3,7 @@
   "name": "Swagger -> Docx",
   "version": "1.0",
   "description": "Logs basic information about all requests made on a page",
-  "permissions": ["webRequest", "storage", "activeTab"],
+  "permissions": ["webRequest", "activeTab"],
   "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "background.js"
