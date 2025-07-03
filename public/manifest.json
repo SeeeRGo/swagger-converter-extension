@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Swagger -> Docx",
   "version": "1.0",
-  "description": "Logs basic information about all requests made on a page",
+  "description": "Конвертирует спецификации сваггера в документацию для аналитики",
   "permissions": ["webRequest", "activeTab"],
   "host_permissions": ["<all_urls>"],
   "background": {
@@ -15,15 +15,15 @@
   "action": {
     "default_popup": "index.html",
     "default_icon": {
-      "16": "icons/icon16.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
+      "16": "icons/icon16.ico",
+      "48": "icons/icon48.ico",
+      "128": "icons/icon128.ico"
     }
   },
   "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "16": "icons/icon16.ico",
+    "48": "icons/icon48.ico",
+    "128": "icons/icon128.ico"
   }
 }
 
