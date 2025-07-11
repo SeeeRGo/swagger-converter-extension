@@ -5,6 +5,11 @@ const finishedRequests = {}
 const blobs = []
 // Listen for web requests
 // Update request data when completed
+chrome.runtime.onInstalled.addListener(function(details){
+    if(details.reason == "install"){
+        console.log("This is a first install!");
+    }
+});
 chrome.webRequest.onCompleted.addListener(
   (details) => {    
     if (details.type === "xmlhttprequest" && (details.url.endsWith('.yaml') || details.url.endsWith('.json') || details.url.endsWith('.yml')) && !finishedRequests[details.url]) {
