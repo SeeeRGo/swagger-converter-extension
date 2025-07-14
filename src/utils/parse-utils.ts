@@ -284,6 +284,12 @@ export const parseResponse = (responseCode?: OpenAPIV3_1.ResponsesObject[string]
       schema: parseSchema(responseCode.content["application/json"]?.schema, data, {})
     }
   }
+  if (responseCode && 'content' in responseCode && responseCode.content && "*/*" in responseCode.content && "schema" in responseCode.content["*/*"]) {
+    return {
+      description: responseCode?.description ?? `Нет описания ответа ${code} кода`,
+      schema: parseSchema(responseCode.content["*/*"]?.schema, data, {})
+    }
+  }
   if (responseCode && 'content' in responseCode && responseCode.content && "text/plain" in responseCode.content && "schema" in responseCode.content["text/plain"]) {
     return {
       description: responseCode?.description ?? `Нет описания ответа ${code} кода`,

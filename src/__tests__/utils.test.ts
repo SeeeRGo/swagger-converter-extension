@@ -34,6 +34,9 @@ test('parse 200 response application/json correctly', () => {
     // @ts-expect-error test input
   expect(parseResponse(response200jsonInput, mockData, '200')).toEqual(response200jsonOutput)
 })
+test.todo('parse 200 response */* correctly')
+test.todo('parse 201 response */* correctly')
+test.todo('parse 400 response */* correctly')
 test('parse 201 response application/json correctly', () => {
     // @ts-expect-error test input
   expect(parseResponse(response201jsonInput, mockData, '201')).toEqual(response201jsonOutput)

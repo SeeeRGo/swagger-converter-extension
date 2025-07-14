@@ -56,6 +56,8 @@ export function UploadSwagger() {
       } else {
         throw new Error(strings.invalidFileMessage)
       }
+      console.log('data', data);
+      
       const parsedData = parseData(data)  
       console.log('parsedData', parsedData);
       
