@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Swagger -> Docx",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Конвертирует спецификации сваггера в документацию для аналитики",
   "permissions": ["webRequest", "activeTab"],
   "host_permissions": ["<all_urls>"],
