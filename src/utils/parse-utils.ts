@@ -58,8 +58,6 @@ const getSchemaNameFromRef = (ref: string) => ref.split('/').at(-1)
 
 // Utility function to extract description with fallbacks
 const getDescription = (obj: any, fallback: string = ''): string => {
-  console.log('obj', obj, "fallback", fallback);
-
   if (!obj) return fallback;
   // Prefer 'description', then 'title', then nested example.description, then fallback
   return (
@@ -223,7 +221,6 @@ export const parseSchema = (schema: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.Sc
 }
 
 export const parseRefSchema = (ref: OpenAPIV3_1.ReferenceObject, data: OpenAPIV3_1.Document, { parentParamName = '', parentParamType = '', parentParamRequired, ignoreParentParam, depth = 0, parentParamDescription, parentParamRef }: ParsingSchemaOptions): ParsedParam[] => {
-  // console.log('parentParamRef', parentParamRef, 'ref.$ref', ref.$ref);
   
   if (parentParamRef && parentParamRef?.includes(ref.$ref)) return []
   const referenceSchema = findSchema(data, getSchemaNameFromRef(sanitizeRef(ref.$ref) ?? ''))
