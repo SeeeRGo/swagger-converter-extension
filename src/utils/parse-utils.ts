@@ -58,7 +58,7 @@ const getSchemaNameFromRef = (ref: string) => ref.split('/').at(-1)
 
 // Utility function to extract description with fallbacks
 const getDescription = (obj: any, fallback: string = ''): string => {
-  // console.log('obj', obj);
+  console.log('obj', obj, "fallback", fallback);
 
   if (!obj) return fallback;
   // Prefer 'description', then 'title', then nested example.description, then fallback
@@ -163,6 +163,10 @@ export const parseSchema = (schema: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.Sc
     paramName: `schema - ${schema}`,
     description: `schema - ${schema}`
   }]
+  if (Object.keys(schema).length === 0) return [{
+    paramName: 'Пустой ответ',
+    description: 'Пустой ответ',
+  }]
   if ('$ref' in schema) return parseRefSchema(schema, data, { parentParamName, parentParamType, parentParamRequired, ignoreParentParam, depth: depth + 1, parentParamDescription, parentParamRef })
   if ('in' in schema) return parseParam(schema, data, { parentParamName, parentParamType, parentParamDescription, parentParamRef })
   if (schema.properties) {
@@ -200,7 +204,7 @@ export const parseSchema = (schema: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.Sc
 
     return parsedOneOf
   }
-  if (schema.type === 'string' || schema.type === 'integer' || schema.type === 'boolean' || schema.type === 'number') {
+  if (schema.type === 'string' || schema.type === 'integer' || schema.type === 'boolean' || schema.type === 'number' || schema.type === 'null') {
     const parsedPrimitive = [{
       paramName: parentParamName,
       paramType: parsePropertyType(schema, data, { parentParamType }),
@@ -465,11 +469,11 @@ export const parseNestedParam = (name: string, property: OpenAPIV3_1.ReferenceOb
       return param
     })
   }
-  if (property.anyOf) return parseAnyOf({ anyOf: property.anyOf, description: property.description }, data, { parentParamName: parentParamName + name, parentParamType, parentParamDescription: property.description, parentParamRef })
+  if (property.anyOf) return parseAnyOf({ anyOf: property.anyOf, description: getDescription(property) }, data, { parentParamName: parentParamName + name, parentParamType, parentParamDescription: property.description, parentParamRef })
   if ('oneOf' in property) {
     const parsedOneOf = parseOneOf({
       oneOf: property.oneOf ?? [],
-      description: property.description
+      description: getDescription(property)
     }, data, { parentParamName: parentParamName + name, parentParamType, parentParamRequired: required ?? [], parentParamRef }).map((oneOf, i) => {
       if (oneOf.paramName.endsWith(name) || oneOf.paramName.endsWith(`${name}[index]`)) {
         return {
