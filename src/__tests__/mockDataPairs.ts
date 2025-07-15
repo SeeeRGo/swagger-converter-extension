@@ -3277,7 +3277,7 @@ export const plainTextRequestBodyOutput = {
         {
             "paramName": "plain_text_body",
             "paramType": "string",
-            "description": undefined,
+            "description": '',
             "required": false,
         },
     ],
