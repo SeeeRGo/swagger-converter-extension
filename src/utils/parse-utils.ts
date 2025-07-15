@@ -56,6 +56,20 @@ const sanitizeRef = (ref?: string) => ref ? ref.substring(ref.indexOf('#')) : re
 
 const getSchemaNameFromRef = (ref: string) => ref.split('/').at(-1)
 
+// Utility function to extract description with fallbacks
+const getDescription = (obj: any, fallback: string = ''): string => {
+  // console.log('obj', obj);
+
+  if (!obj) return fallback;
+  // Prefer 'description', then 'title', then nested example.description, then fallback
+  return (
+    obj.description ??
+    obj.title ??
+    obj.example?.description ??
+    fallback
+  );
+};
+
 const findSchema = (data: OpenAPIV3_1.Document, schemaName?: string) => {
   if (!schemaName) return undefined
   const schemas = {

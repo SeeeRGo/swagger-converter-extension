@@ -37,6 +37,8 @@ test('parse 200 response application/json correctly', () => {
 test.todo('parse 200 response */* correctly')
 test.todo('parse 201 response */* correctly')
 test.todo('parse 400 response */* correctly')
+test.todo('parse schema with type: null correctly')
+test.todo('parse schema with title in place of description')
 test('parse 201 response application/json correctly', () => {
     // @ts-expect-error test input
   expect(parseResponse(response201jsonInput, mockData, '201')).toEqual(response201jsonOutput)

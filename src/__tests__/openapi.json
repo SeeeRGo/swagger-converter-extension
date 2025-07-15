@@ -1,0 +1,1611 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Трекер шахты API",
+        "description": "API Трекера шахты.",
+        "version": "development version"
+    },
+    "paths": {
+        "/api/fuel-consumption": {
+            "get": {
+                "tags": [
+                    "Tracker"
+                ],
+                "summary": "Get Fuel Consumption",
+                "description": "Получение данных о потреблении топлива.\n\nArgs:\n    client (HttpxShaftLayersTrackerClient): Клиент для обращения к внешнему API.\n\nReturns:\n    FuelConsumption: Данные о потреблении топлива.\n\nRaises:\n    HTTPException: В случае, если данные не могут быть получены.",
+                "operationId": "get_fuel_consumption_api_fuel_consumption_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FuelConsumption"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/pci-chemical": {
+            "get": {
+                "tags": [
+                    "Tracker"
+                ],
+                "summary": "Get Pci Chemical",
+                "description": "Получение данных химии ПУТ.\n\nArgs:\n    client (HttpxShaftLayersTrackerClient): Клиент для обращения к внешнему API.\n\nReturns:\n    ChemistryPci: Данные химии ПУТ.\n\nRaises:\n    HTTPException: В случае, если данные не могут быть получены.",
+                "operationId": "get_pci_chemical_api_pci_chemical_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChemistryPci"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/density": {
+            "get": {
+                "tags": [
+                    "Tracker"
+                ],
+                "summary": "Get Density",
+                "description": "Получение данных о плотности чугуна и шлака.\n\nArgs:\n    client (HttpxDataLayerClient): Клиент для обращения к внешнему API.\n\nReturns:\n    Density: Данные о плотности чугуна и шлака.\n\nRaises:\n    HTTPException: В случае, если данные не могут быть получены.",
+                "operationId": "get_density_api_density_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Density"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/recommendation": {
+            "get": {
+                "tags": [
+                    "Tracker"
+                ],
+                "summary": "Get Recommendation",
+                "description": "Получение рекомендации по слоям и порциям.\n\nArgs:\n    service (RecommendationService): Сервис рекомендаций.\n\nReturns:\n    UnifiedRecommendation: Объединенная модель, включающая все виды рекомендаций.\n\nRaises:\n    HTTPException: В случае, если данные не могут быть получены.",
+                "operationId": "get_recommendation_api_recommendation_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecommendationSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/spectrometer-info": {
+            "get": {
+                "tags": [
+                    "Tracker"
+                ],
+                "summary": "Spectrometer Info",
+                "description": "Получение данных со спектрометра для печи за последние 2 часа.\n\nArgs:\n    client (HttpxDataLayerClient): Клиент для обращения к внешнему API.\n\nReturns:\n    Optional[Spectrometer]: Данные со спектрометра, или None в случае ошибки.",
+                "operationId": "spectrometer_info_api_spectrometer_info_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Spectrometer"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/info/statistic": {
+            "get": {
+                "tags": [
+                    "Statisticks"
+                ],
+                "summary": "Get Up Info",
+                "operationId": "get_up_info_api_info_statistic_get",
+                "parameters": [
+                    {
+                        "name": "ts",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0,
+                            "title": "Ts"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PortionStatistic"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/aggregated-data": {
+            "get": {
+                "tags": [
+                    "Statisticks"
+                ],
+                "summary": "Get Aggregated Data",
+                "description": "Получение агрегированных данных по слоям.\n\nArgs:\n    layers - слои закешированная\n    chemical - химия закешированная\nReturns:\n    list[AggregatedDataItem]: Список слоев с химическим анализом и потреблением.\n\nRaises:\n    DataNotFound: В случае, если данные не могут быть получены.",
+                "operationId": "get_aggregated_data_api_aggregated_data_get",
+                "parameters": [
+                    {
+                        "name": "ts",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0,
+                            "title": "Ts"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AggregatedData"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/params": {
+            "post": {
+                "tags": [
+                    "Params"
+                ],
+                "summary": "Update Params",
+                "description": "Изменение параметров",
+                "operationId": "update_params_api_params_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Parameters"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/charts": {
+            "get": {
+                "tags": [
+                    "Charts"
+                ],
+                "summary": "Get All Charts",
+                "operationId": "get_all_charts_api_charts_get",
+                "parameters": [
+                    {
+                        "name": "charts",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/BurdenTagCharts"
+                                    },
+                                    {
+                                        "$ref": "#/components/schemas/TagCharts"
+                                    }
+                                ]
+                            },
+                            "title": "Charts"
+                        }
+                    },
+                    {
+                        "name": "aggregation_type",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/AggregationType",
+                            "default": "feed_num"
+                        }
+                    },
+                    {
+                        "name": "ts",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0,
+                            "title": "Ts"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ChartOut"
+                                    },
+                                    "title": "Response Get All Charts Api Charts Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/healthcheck": {
+            "get": {
+                "tags": [
+                    "health"
+                ],
+                "summary": "Endpoint",
+                "operationId": "endpoint_healthcheck_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AbnormalTableOfParameters": {
+                "properties": {
+                    "castNumber": {
+                        "type": "integer",
+                        "title": "Castnumber"
+                    },
+                    "b2": {
+                        "type": "number",
+                        "title": "B2"
+                    },
+                    "specificCokeConsumption": {
+                        "type": "number",
+                        "title": "Specificcokeconsumption"
+                    },
+                    "estimated": {
+                        "type": "boolean",
+                        "title": "Estimated"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "castNumber",
+                    "b2",
+                    "specificCokeConsumption",
+                    "estimated"
+                ],
+                "title": "AbnormalTableOfParameters",
+                "description": "Класс таблицы параметров для рекомендации о приходе аномальных порций"
+            },
+            "AggregatedData": {
+                "properties": {
+                    "portionsTable": {
+                        "items": {
+                            "$ref": "#/components/schemas/AggregatedDataItem"
+                        },
+                        "type": "array",
+                        "title": "Агрегированная химия порций по виду материала"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "portionsTable"
+                ],
+                "title": "AggregatedData"
+            },
+            "AggregatedDataItem": {
+                "properties": {
+                    "fe": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Fe, %",
+                        "default": 0
+                    },
+                    "feO": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "FeO, %",
+                        "default": 0
+                    },
+                    "siO2": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "SiO2, %",
+                        "default": 0
+                    },
+                    "caO": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "CaO, %",
+                        "default": 0
+                    },
+                    "al2O3": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Al2O3, %",
+                        "default": 0
+                    },
+                    "mgO": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "MgO, %",
+                        "default": 0
+                    },
+                    "mnO": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "MnO, %",
+                        "default": 0
+                    },
+                    "k2O": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "K2O, %",
+                        "default": 0
+                    },
+                    "na2O": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Na2O, %",
+                        "default": 0
+                    },
+                    "zn": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Zn, %",
+                        "default": 0
+                    },
+                    "s": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "S, %",
+                        "default": 0
+                    },
+                    "mn": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Mn, %",
+                        "default": 0
+                    },
+                    "ash": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Доля золы, %",
+                        "default": 0
+                    },
+                    "moisture": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Влага с влагоплотномеров, %",
+                        "default": 0
+                    },
+                    "cri": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "CRI, %",
+                        "default": 0
+                    },
+                    "csr": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "CSR, %",
+                        "default": 0
+                    },
+                    "m25": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "M25, %",
+                        "default": 0
+                    },
+                    "m10": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "M10, %",
+                        "default": 0
+                    },
+                    "m40": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "M40, %",
+                        "default": 0
+                    },
+                    "volatileContent": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Летучие, %",
+                        "default": 0
+                    },
+                    "id": {
+                        "type": "integer",
+                        "title": "Идентификатор слоя"
+                    },
+                    "feedNum": {
+                        "type": "integer",
+                        "title": "Номер подачи"
+                    },
+                    "feedTime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Время подачи"
+                    },
+                    "height": {
+                        "type": "number",
+                        "title": "Положение, м"
+                    },
+                    "meltTime": {
+                        "type": "string",
+                        "format": "duration",
+                        "title": "Время проплавки"
+                    },
+                    "burdenType": {
+                        "type": "string",
+                        "title": "Вид порции"
+                    },
+                    "burdenWeight": {
+                        "type": "number",
+                        "title": "Масса, т"
+                    },
+                    "moreThan80mm": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": ">80 мм, %",
+                        "default": 0
+                    },
+                    "moreThan60mm": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": ">60 мм, %",
+                        "default": 0
+                    },
+                    "moreThan40mm": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": ">40 мм, %",
+                        "default": 0
+                    },
+                    "moreThan25mm": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": ">20 мм, %",
+                        "default": 0
+                    },
+                    "lessThan25mm": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "25< мм, %",
+                        "default": 0
+                    },
+                    "sampleNumbers": {
+                        "items": {
+                            "type": "integer"
+                        },
+                        "type": "array",
+                        "title": "Проба №"
+                    },
+                    "funnels": {
+                        "items": {
+                            "type": "integer"
+                        },
+                        "type": "array",
+                        "title": "Воронки"
+                    },
+                    "portionStructure": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Типы шихты в порции"
+                    },
+                    "chemicalRawMaterialsCokeGranuleEqDiameter": {
+                        "type": "number",
+                        "title": "Диаметр куска кокса",
+                        "default": 0
+                    },
+                    "chemicalRawMaterialsAglomerateGranuleEqDiameter": {
+                        "type": "number",
+                        "title": "Диаметр куска агломерата",
+                        "default": 0
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "feedNum",
+                    "feedTime",
+                    "height",
+                    "meltTime",
+                    "burdenType",
+                    "burdenWeight",
+                    "sampleNumbers",
+                    "funnels",
+                    "portionStructure"
+                ],
+                "title": "AggregatedDataItem"
+            },
+            "AggregationType": {
+                "type": "string",
+                "enum": [
+                    "feed_num",
+                    "feed_cycle_num",
+                    "feed_estimated_release_num"
+                ],
+                "title": "AggregationType"
+            },
+            "BurdenTagCharts": {
+                "type": "string",
+                "enum": [
+                    "b_2_burden",
+                    "b_3_burden",
+                    "b_4_burden",
+                    "agglomerates_burden",
+                    "pellets_burden",
+                    "coke_cast_iron_burden",
+                    "cast_iron_weight_burden",
+                    "slag_weight_burden",
+                    "ore_load_burden"
+                ],
+                "title": "BurdenTagCharts"
+            },
+            "ChartOut": {
+                "properties": {
+                    "height": {
+                        "type": "number",
+                        "title": "Height"
+                    },
+                    "feedNum": {
+                        "type": "integer",
+                        "title": "Feednum"
+                    },
+                    "data": {
+                        "additionalProperties": {
+                            "anyOf": [
+                                {
+                                    "type": "number"
+                                },
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        },
+                        "type": "object",
+                        "title": "Data"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "height",
+                    "feedNum",
+                    "data"
+                ],
+                "title": "ChartOut"
+            },
+            "Chemical": {
+                "properties": {
+                    "c": {
+                        "type": "number",
+                        "title": "Углерод",
+                        "description": "Процентное содержание углерода в образце"
+                    },
+                    "p": {
+                        "type": "number",
+                        "title": "Фосфор",
+                        "description": "Процентное содержание фосфора в образце"
+                    },
+                    "s": {
+                        "type": "number",
+                        "title": "Сера",
+                        "description": "Процентное содержание серы в образце"
+                    },
+                    "v": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Ванадий",
+                        "description": "Процентное содержание ванадия в образце"
+                    },
+                    "mn": {
+                        "type": "number",
+                        "title": "Марганец",
+                        "description": "Процентное содержание марганца в образце"
+                    },
+                    "si": {
+                        "type": "number",
+                        "title": "Кремний",
+                        "description": "Процентное содержание кремния в образце"
+                    },
+                    "ti": {
+                        "type": "number",
+                        "title": "Титан",
+                        "description": "Процентное содержание титана в образце"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "c",
+                    "p",
+                    "s",
+                    "mn",
+                    "si",
+                    "ti"
+                ],
+                "title": "Chemical"
+            },
+            "ChemistryPci": {
+                "properties": {
+                    "feedTime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Время подачи"
+                    },
+                    "probe": {
+                        "type": "integer",
+                        "title": "Probe"
+                    },
+                    "sAsh": {
+                        "type": "number",
+                        "title": "S"
+                    },
+                    "zn": {
+                        "type": "number",
+                        "title": "Zn"
+                    },
+                    "caO": {
+                        "type": "number",
+                        "title": "CaO"
+                    },
+                    "mgO": {
+                        "type": "number",
+                        "title": "MgO"
+                    },
+                    "al2O3": {
+                        "type": "number",
+                        "title": "Al2O3"
+                    },
+                    "mnO": {
+                        "type": "number",
+                        "title": "MnO"
+                    },
+                    "siO2": {
+                        "type": "number",
+                        "title": "SiO2"
+                    },
+                    "fe": {
+                        "type": "number",
+                        "title": "Fe"
+                    },
+                    "na2O": {
+                        "type": "number",
+                        "title": "Na2O"
+                    },
+                    "k2O": {
+                        "type": "number",
+                        "title": "K2O"
+                    },
+                    "percPci": {
+                        "type": "number",
+                        "title": "Процент золы в ПУТ"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "feedTime",
+                    "probe",
+                    "sAsh",
+                    "zn",
+                    "caO",
+                    "mgO",
+                    "al2O3",
+                    "mnO",
+                    "siO2",
+                    "fe",
+                    "na2O",
+                    "k2O",
+                    "percPci"
+                ],
+                "title": "ChemistryPci",
+                "description": "Химия ПУТ"
+            },
+            "Density": {
+                "properties": {
+                    "iron": {
+                        "type": "number",
+                        "title": "Плотность чугуна [т/м^3]"
+                    },
+                    "slag": {
+                        "type": "number",
+                        "title": "Плотность шлака [т/м^3]"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "iron",
+                    "slag"
+                ],
+                "title": "Density",
+                "description": "Плотность продуктов"
+            },
+            "FuelConsumption": {
+                "properties": {
+                    "pciSlag": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Пылеугольное топливо (ПУТ). Вдувание ПУТ."
+                    },
+                    "specificFuelConsumption": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Удельный расход кокса"
+                    },
+                    "specificPciFuelConsumption": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Удельный расход ПУТ",
+                        "default": 0.0
+                    },
+                    "specificNgFuelConsumption": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Удельный расход газа",
+                        "default": 0.0
+                    },
+                    "specificCokeFuelConsumption": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Удельный расход кокса",
+                        "default": 0.0
+                    },
+                    "specificPciFuelConsumptionBosh": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Удельный расход ПУТ",
+                        "default": 0.0
+                    },
+                    "specificNgFuelConsumptionBosh": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Удельный расход газа",
+                        "default": 0.0
+                    },
+                    "specificCokeFuelConsumptionBosh": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Удельный расход кокса",
+                        "default": 0.0
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "pciSlag",
+                    "specificFuelConsumption"
+                ],
+                "title": "FuelConsumption",
+                "description": "Потребление топлива"
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "Info": {
+                "properties": {
+                    "analysisDate": {
+                        "type": "integer",
+                        "title": "Дата анализа",
+                        "description": "Временная метка проведения анализа"
+                    },
+                    "releaseNum": {
+                        "type": "integer",
+                        "title": "Номер выпуска",
+                        "description": "Уникальный идентификатор выпуска"
+                    },
+                    "chemical": {
+                        "$ref": "#/components/schemas/Chemical",
+                        "title": "Химический состав",
+                        "description": "Химический состав образца"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "analysisDate",
+                    "releaseNum",
+                    "chemical"
+                ],
+                "title": "Info"
+            },
+            "Parameters": {
+                "properties": {
+                    "coefficientCokeReplacementPci": {
+                        "type": "number",
+                        "title": "Коэффициент замены кокса ПУТом",
+                        "description": "кг/м3",
+                        "default": 0.8
+                    },
+                    "coefficientCokeReplacementPg": {
+                        "type": "number",
+                        "title": "Коэффициент замены кокса ПГ",
+                        "description": "м3/т",
+                        "default": 105
+                    },
+                    "coefficientPg1": {
+                        "type": "number",
+                        "title": "Коэффициент замены кокса ПГ <=80",
+                        "description": "кг/м3",
+                        "default": 0.8
+                    },
+                    "coefficientPg2": {
+                        "type": "number",
+                        "title": "Коэффициент замены кокса ПГ <=90",
+                        "description": "кг/м3",
+                        "default": 0.78
+                    },
+                    "coefficientPg3": {
+                        "type": "number",
+                        "title": "Коэффициент замены кокса ПГ <=100",
+                        "description": "кг/м3",
+                        "default": 0.76
+                    },
+                    "coefficientPg4": {
+                        "type": "number",
+                        "title": "Коэффициент замены кокса ПГ <=110",
+                        "description": "кг/м3",
+                        "default": 0.74
+                    },
+                    "coefficientPg5": {
+                        "type": "number",
+                        "title": "Коэффициент замены кокса ПГ <=120",
+                        "description": "кг/м3",
+                        "default": 0.72
+                    },
+                    "coefficientPg6": {
+                        "type": "number",
+                        "title": "Коэффициент замены кокса ПГ <=130",
+                        "description": "кг/м3",
+                        "default": 0.7
+                    },
+                    "coefficientPg7": {
+                        "type": "number",
+                        "title": "Коэффициент замены кокса ПГ <=140",
+                        "description": "кг/м3",
+                        "default": 0.68
+                    },
+                    "coefficientPg8": {
+                        "type": "number",
+                        "title": "Коэффициент замены кокса ПГ >140",
+                        "description": "кг/м3",
+                        "default": 0.66
+                    },
+                    "recIncreasedHeating": {
+                        "type": "number",
+                        "title": "Рекомендация по повышенному нагреву",
+                        "description": "1/0",
+                        "default": 1
+                    },
+                    "recDecreasedHeating": {
+                        "type": "number",
+                        "title": "Рекомендация по пониженному нагреву",
+                        "description": "1/0",
+                        "default": 1
+                    },
+                    "recBasicityDifference": {
+                        "type": "number",
+                        "title": "Рекомендация по повышенной разности основности с шихтовкой",
+                        "description": "1/0",
+                        "default": 1
+                    },
+                    "recCokeRateDifference": {
+                        "type": "number",
+                        "title": "Рекомендация по повышенной разности удельного расхода кокса с шихтовкой",
+                        "description": "1/0",
+                        "default": 1
+                    },
+                    "recIronOutputDifference": {
+                        "type": "number",
+                        "title": "Повышенная разность теоретического выхода чугуна с подачи",
+                        "default": 1
+                    },
+                    "recSlagOutputDifference": {
+                        "type": "number",
+                        "title": "Повышенная разность теоретического выхода шлака с подачи",
+                        "default": 1
+                    },
+                    "recAbnormalPortion": {
+                        "type": "number",
+                        "title": "Оповещение о приходе аномальных порций в горн",
+                        "default": 1
+                    },
+                    "differenceBetweenRadars": {
+                        "type": "number",
+                        "title": "Допустимая разность в показаниях уровнемеров",
+                        "description": "м",
+                        "default": 2
+                    },
+                    "recHeatingSiLimit": {
+                        "type": "number",
+                        "title": "Верхний предел Si начала работы рекомендаций по нагреву, %",
+                        "description": "1/0",
+                        "default": 1
+                    },
+                    "recHeatingSiUpperLimit": {
+                        "type": "number",
+                        "title": "Верхний предел Si начала работы рекомендаций по нагреву, %",
+                        "default": 0.06
+                    },
+                    "recHeatingSiLowerLimit": {
+                        "type": "number",
+                        "title": "Нижний предел Si начала работы рекомендаций по нагреву, %",
+                        "default": 0.04
+                    }
+                },
+                "type": "object",
+                "title": "Parameters"
+            },
+            "PortionStatistic": {
+                "properties": {
+                    "lastPortionTimestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Время последней порции"
+                    },
+                    "portionsInFurnaceCount": {
+                        "type": "integer",
+                        "title": "Порций в печи"
+                    },
+                    "burdenLevel": {
+                        "type": "number",
+                        "title": "Уровень засыпи, м"
+                    },
+                    "cokeSpecificConsumptionInVolume": {
+                        "type": "integer",
+                        "title": "Расход кокса (объем), кг/т"
+                    },
+                    "naturalGasSpecificConsumption": {
+                        "type": "integer",
+                        "title": "Расход природного газа"
+                    },
+                    "pulverizedCoalFuelSpecificConsumption": {
+                        "type": "integer",
+                        "title": "Расход ПУТ"
+                    },
+                    "meltingDurationHours": {
+                        "type": "number",
+                        "title": "Время проплавки объема"
+                    },
+                    "cokeSpecificConsumptionInBosh": {
+                        "type": "integer",
+                        "title": "Расход кокса (заплечики)"
+                    },
+                    "fuelSpecificConsumption": {
+                        "type": "integer",
+                        "title": "Удельный расход топлива"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "lastPortionTimestamp",
+                    "portionsInFurnaceCount",
+                    "burdenLevel",
+                    "cokeSpecificConsumptionInVolume",
+                    "naturalGasSpecificConsumption",
+                    "pulverizedCoalFuelSpecificConsumption",
+                    "meltingDurationHours",
+                    "cokeSpecificConsumptionInBosh",
+                    "fuelSpecificConsumption"
+                ],
+                "title": "PortionStatistic"
+            },
+            "Recommendation": {
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "title": "Title"
+                    },
+                    "titleSeverity": {
+                        "type": "string",
+                        "title": "Titleseverity"
+                    },
+                    "steps": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "$ref": "#/components/schemas/Step"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Steps",
+                        "default": []
+                    },
+                    "additionalComment": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Additionalcomment"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "title",
+                    "titleSeverity"
+                ],
+                "title": "Recommendation"
+            },
+            "RecommendationSchema": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "title": "Id"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Timestamp"
+                    },
+                    "expiresAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": ""
+                    },
+                    "reasonType": {
+                        "type": "string",
+                        "title": "Причина по которой произошло уведомление (тип рекомендации)"
+                    },
+                    "reasonTitle": {
+                        "type": "string",
+                        "title": "Заголовок уведомления"
+                    },
+                    "tableOfParameters": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "anyOf": [
+                                        {
+                                            "$ref": "#/components/schemas/TableOfParameters"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/AbnormalTableOfParameters"
+                                        }
+                                    ]
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Tableofparameters"
+                    },
+                    "recommendation": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/Recommendation"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "timestamp",
+                    "expiresAt",
+                    "reasonType",
+                    "reasonTitle",
+                    "recommendation"
+                ],
+                "title": "RecommendationSchema",
+                "description": "Основная модель рекомендации"
+            },
+            "Spectrometer": {
+                "properties": {
+                    "infos": {
+                        "items": {
+                            "$ref": "#/components/schemas/Info"
+                        },
+                        "type": "array",
+                        "title": "Список информации",
+                        "description": "Список данных анализа"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "infos"
+                ],
+                "title": "Spectrometer"
+            },
+            "Step": {
+                "properties": {
+                    "text": {
+                        "type": "string",
+                        "title": "Text"
+                    },
+                    "trend": {
+                        "$ref": "#/components/schemas/TrendType"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "text",
+                    "trend"
+                ],
+                "title": "Step",
+                "description": "Steps в recommendation"
+            },
+            "TableOfParameters": {
+                "properties": {
+                    "castNumber": {
+                        "type": "integer",
+                        "title": "Castnumber"
+                    },
+                    "cokeSpecificConsumption": {
+                        "type": "number",
+                        "title": "Cokespecificconsumption"
+                    },
+                    "siliconContent": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "$ref": "#/components/schemas/TrendType"
+                            }
+                        ],
+                        "title": "Siliconcontent"
+                    },
+                    "fuelSpecificConsumption": {
+                        "type": "number",
+                        "title": "Fuelspecificconsumption"
+                    },
+                    "sulfurContent": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "$ref": "#/components/schemas/TrendType"
+                            }
+                        ],
+                        "title": "Sulfurcontent"
+                    },
+                    "castIronTemperature": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "$ref": "#/components/schemas/TrendType"
+                            }
+                        ],
+                        "title": "Castirontemperature"
+                    },
+                    "estimated": {
+                        "type": "boolean",
+                        "title": "Estimated"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "castNumber",
+                    "cokeSpecificConsumption",
+                    "siliconContent",
+                    "fuelSpecificConsumption",
+                    "sulfurContent",
+                    "castIronTemperature",
+                    "estimated"
+                ],
+                "title": "TableOfParameters",
+                "description": "Базовый класс таблицы параметров"
+            },
+            "TagCharts": {
+                "type": "string",
+                "enum": [
+                    "cri",
+                    "csr",
+                    "m_25",
+                    "m_10",
+                    "melt_time",
+                    "theoretical_weight_iron",
+                    "theoretical_weight_slag",
+                    "b_2_actual",
+                    "b_3_actual",
+                    "b_4_actual",
+                    "b_2_planned",
+                    "b_3_planned",
+                    "b_4_planned",
+                    "burden_weight",
+                    "moisture",
+                    "coke_humidity",
+                    "specific_coke_wet",
+                    "specific_coke_dry",
+                    "specific_coke_dry_opex",
+                    "specific_coke_dry_moisture",
+                    "ore_burden",
+                    "weight_coke",
+                    "weight_ore",
+                    "agglomerates",
+                    "pellets",
+                    "charge_material",
+                    "gbj",
+                    "supply_manganese_ore",
+                    "agglomerate_wash",
+                    "feed_iron",
+                    "agglomerate_iron",
+                    "b_2_agg",
+                    "b_3_agg",
+                    "b_4_agg",
+                    "level",
+                    "portion_sulfur",
+                    "dose_structure_coke_granule_eq_diameter",
+                    "dose_structure_aglomerate_granule_eq_diameter",
+                    "chemical_raw_materials_coke_granule_eq_diameter",
+                    "chemical_raw_materials_aglomerate_granule_eq_diameter",
+                    "coke_quality_complex_indicator"
+                ],
+                "title": "TagCharts"
+            },
+            "TrendType": {
+                "type": "string",
+                "enum": [
+                    "INCREASE",
+                    "DECREASE",
+                    "EMPTY"
+                ],
+                "title": "TrendType"
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            }
+        }
+    }
+}
